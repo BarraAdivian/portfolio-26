@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barra Adivian — Creative Developer</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+  <style>
+    /* ============ RESET ============ */
+    * { box-sizing: border-box; }
+    html { scroll-behavior: auto; background: #0b0b0b; }
+    body {
+      margin: 0; background: #0b0b0b; color: #f5f4f0;
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden; cursor: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    ::selection { background: #c2a6cc; color: #111; }
+    @media (pointer: fine) { * { cursor: none !important; } }
+
+    /* ============ PRELOADER ============ */
+    .preloader {
+      position: fixed; inset: 0; z-index: 10000;
+      background: #0b0b0b; display: grid; place-items: center;
+    }
+    .pre-name { font-size: 11px; letter-spacing: .45em; text-transform: uppercase; color: rgba(245,244,240,.45); }
+    .pre-count {
+      position: absolute; right: 40px; bottom: 24px;
+      font-size: clamp(70px, 10vw, 140px); font-weight: 600;
+      letter-spacing: -.05em; line-height: 1; font-variant-numeric: tabular-nums;
+    }
+
+    /* ============ CURSOR ============ */
+    .cursor-dot {
+      position: fixed; top: 0; left: 0; width: 8px; height: 8px;
+      background: #fff; border-radius: 50%; pointer-events: none;
+      z-index: 9999; transform: translate(-50%, -50%); mix-blend-mode: difference;
+    }
+    .cursor-circle {
+      position: fixed; top: 0; left: 0; width: 42px; height: 42px;
+      border: 1px solid rgba(255,255,255,.5); border-radius: 50%;
+      pointer-events: none; z-index: 9998; transform: translate(-50%, -50%);
+      display: grid; place-items: center;
+      transition: width .45s cubic-bezier(.22,1,.36,1), height .45s cubic-bezier(.22,1,.36,1),
+                  background .45s ease, border-color .45s ease;
+    }
+    .cursor-circle span {
+      font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: #111; opacity: 0; transition: opacity .25s ease;
+    }
+    body.cursor-hover .cursor-circle {
+      width: 80px; height: 80px;
+      background: rgba(194,166,204,.12); border-color: rgba(194,166,204,.8);
+    }
+    body.cursor-view .cursor-circle {
+      width: 92px; height: 92px;
+      background: #c2a6cc; border-color: transparent;
+    }
+    body.cursor-view .cursor-circle span { opacity: 1; }
+
+    /* ============ NOISE ============ */
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9990; opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    }
+
+    /* ============ NAV ============ */
+    .nav {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 2000;
+      padding: 26px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      pointer-events: none;
+    }
+    .nav a, .nav button { pointer-events: auto; }
+
+    .nav-logo {
+      font-size: 17px; font-weight: 600; letter-spacing: -.04em;
+      color: #fff; mix-blend-mode: difference;
+    }
+
+    /* tinggi row = tinggi tombol → tombol gak mepet atas, logo rata tengah */
+    .nav-right { position: relative; display: flex; align-items: center; height: 72px; }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 26px;
+      mix-blend-mode: difference; padding-right: 108px;
+    }
+    .nav-link {
+      position: relative; display: inline-block; overflow: hidden;
+      font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+      color: #fff; line-height: 1.3; height: 1.3em;
+    }
+    .nav-link span { display: block; transition: transform .45s cubic-bezier(.22,1,.36,1); }
+    .nav-link::after {
+      content: attr(data-text); position: absolute; left: 0; top: 100%; line-height: 1.3;
+      transition: transform .45s cubic-bezier(.22,1,.36,1);
+    }
+    .nav-link:hover span { transform: translateY(-100%); }
+    .nav-link:hover::after { transform: translateY(-100%); }
+
+    /* hamburger bulat — lebih besar, hover pink naik lebih pelan & smooth */
+    .menu-button {
+      position: absolute; right: 0; top: 50%; margin-top: -36px;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #f5f4f0; display: grid; place-items: center;
+      overflow: hidden; border: none;
+    }
+    .menu-button::before {
+      content: ""; position: absolute; inset: 0; border-radius: 50%;
+      background: #c2a6cc; transform: translateY(101%);
+      transition: transform .75s cubic-bezier(.22,1,.36,1);
+    }
+    .menu-button:hover::before { transform: translateY(0); }
+    .menu-icon { position: relative; z-index: 1; width: 26px; height: 19px; }
+    .menu-line {
+      position: absolute; left: 0; width: 100%; height: 1.5px; background: #111;
+      transition: transform .5s cubic-bezier(.22,1,.36,1), top .5s cubic-bezier(.22,1,.36,1);
+    }
+    .menu-line:nth-child(1) { top: 6px; }
+    .menu-line:nth-child(2) { top: 13px; }
+    .menu-button.open .menu-line:nth-child(1) { top: 9.5px; transform: rotate(45deg); }
+    .menu-button.open .menu-line:nth-child(2) { top: 9.5px; transform: rotate(-45deg); }
+
+    /* ============ FULL MENU ============ */
+    .menu-overlay {
+      position: fixed; inset: 0; background: #c2a6cc; color: #111;
+      z-index: 1500; clip-path: inset(0 0 100% 0); pointer-events: none;
+    }
+    .menu-inner {
+      width: 100%; height: 100%; padding: 130px 40px 35px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .menu-links { display: flex; flex-direction: column; gap: 4px; }
+    .menu-link {
+      display: block; width: fit-content; overflow: hidden;
+      font-size: clamp(58px, 9vw, 140px); line-height: .84;
+      letter-spacing: -.08em; font-weight: 600;
+      transition: opacity .3s ease, padding-left .5s cubic-bezier(.22,1,.36,1);
+    }
+    .menu-link span { display: block; transform: translateY(110%); }
+    .menu-link:hover { opacity: .65; padding-left: 20px; }
+    .menu-meta {
+      display: flex; justify-content: space-between;
+      font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      min-height: 100vh; padding: 145px 40px 40px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .hero-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .hero-label { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: rgba(245,244,240,.5); }
+    .hero-location { text-align: right; font-size: 12px; line-height: 1.6; color: rgba(245,244,240,.5); }
+    .hero-title {
+      margin-top: auto; margin-bottom: 70px;
+      font-size: clamp(70px, 14vw, 200px); line-height: .76;
+      letter-spacing: -.095em; font-weight: 600; overflow: hidden;
+    }
+    .hero-line { display: block; transform: translateY(115%); }
+    .hero-line.stroke { color: transparent; -webkit-text-stroke: 1.5px #f5f4f0; }
+    .hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-description { max-width: 390px; font-size: 15px; line-height: 1.55; color: rgba(245,244,240,.58); }
+    .scroll-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+      display: flex; gap: 15px; align-items: center;
+    }
+    .scroll-arrow { display: inline-block; animation: arrowMove 1.6s infinite ease-in-out; }
+    @keyframes arrowMove { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+
+    /* ============ SECTION ============ */
+    .section { padding: 190px 40px; }
+    .section-heading { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 90px; }
+    .section-number { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: rgba(245,244,240,.4); }
+    .section-title-small { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+
+    /* ============ MARQUEE ============ */
+    .marquee {
+      overflow: hidden; border-top: 1px solid rgba(255,255,255,.13);
+      border-bottom: 1px solid rgba(255,255,255,.13); padding: 24px 0;
+    }
+    .marquee-track { display: flex; width: max-content; gap: 40px; animation: marqueeMove 24s linear infinite; }
+    .marquee-item { font-size: clamp(35px, 5vw, 70px); line-height: .9; letter-spacing: -.06em; white-space: nowrap; }
+    .marquee-dot { color: #c2a6cc; }
+    @keyframes marqueeMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ============ WORK ============ */
+    .work-list { border-top: 1px solid rgba(255,255,255,.14); }
+    .work-item {
+      position: relative; display: grid; grid-template-columns: 65px 1fr 180px;
+      align-items: center; padding: 35px 0;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+      transition: padding .55s cubic-bezier(.22,1,.36,1);
+    }
+    .work-item:hover { padding-left: 22px; padding-right: 22px; }
+    .work-number { font-size: 11px; color: rgba(245,244,240,.35); }
+    .work-name {
+      font-size: clamp(38px, 5vw, 78px); line-height: .88; letter-spacing: -.065em;
+      transition: transform .55s cubic-bezier(.22,1,.36,1);
+    }
+    .work-item:hover .work-name { transform: translateX(15px); }
+    .work-type { text-align: right; font-size: 11px; text-transform: uppercase; letter-spacing: .09em; color: rgba(245,244,240,.4); }
+
+    /* tombol more works */
+    .more-wrap { display: flex; justify-content: center; margin-top: 70px; }
+    .more-btn {
+      position: relative; overflow: hidden;
+      display: inline-flex; align-items: center;
+      padding: 20px 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px;
+      font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .more-btn::before {
+      content: ""; position: absolute; inset: 0; border-radius: 999px;
+      background: #c2a6cc; transform: translateY(101%);
+      transition: transform .5s cubic-bezier(.22,1,.36,1);
+    }
+    .more-btn:hover::before { transform: translateY(0); }
+    .more-label { position: relative; z-index: 1; transition: color .3s ease; }
+    .more-btn:hover .more-label { color: #111; }
+
+    /* ============ PROJECT PREVIEW ============ */
+    .project-preview {
+      position: fixed; top: 0; left: 0; width: 380px; height: 255px;
+      pointer-events: none; z-index: 700; overflow: hidden; border-radius: 4px;
+      opacity: 0; transform: scale(.75);
+      box-shadow: 0 35px 100px rgba(0,0,0,.5), 0 0 80px rgba(194,166,204,.09);
+    }
+    .project-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ============ KONTEN + CURVED FOOTER ============ */
+    main {
+      position: relative; z-index: 2;
+      background: #0b0b0b;
+      border-radius: 0 0 44px 44px;
+      box-shadow: 0 40px 80px rgba(0,0,0,.55);
+      overflow: clip;
+    }
+    .footer-space { height: 100vh; height: 100svh; }
+    footer {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
+      height: 100vh; height: 100svh;
+      background: #c2a6cc; color: #141414;
+    }
+    .footer-inner {
+      height: 100%; padding: 50px 40px 26px;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .footer-heading-wrap {
+      margin: auto 0;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+    }
+    .footer-heading {
+      font-size: clamp(70px, 14vw, 200px); line-height: .74; letter-spacing: -.1em;
+    }
+    /* tombol bulat Get in touch — hover bg agak gelap dikit (kyk Dennis) */
+    .f-circle {
+      flex: none; width: 175px; height: 175px; border-radius: 50%;
+      display: grid; place-items: center; text-align: center;
+      background: #c2a6cc; color: #141414;
+      font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+      border: 1px solid rgba(20,20,20,.25);
+      transition: background-color .5s ease;
+    }
+    .f-circle:hover { background: #b79ac3; }
+    .footer-middle { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: end; }
+    .footer-copy { max-width: 400px; font-size: 14px; line-height: 1.6; color: rgba(20,20,20,.6); }
+    .footer-socials { display: flex; justify-content: flex-end; gap: 30px; flex-wrap: wrap; }
+    .footer-social {
+      position: relative; font-size: 11px; text-transform: uppercase;
+      letter-spacing: .08em; color: #141414;
+    }
+    .footer-social::after {
+      content: ""; position: absolute; left: 0; bottom: -6px; width: 100%; height: 1px;
+      background: #141414; transform: scaleX(0); transform-origin: right;
+      transition: transform .45s ease;
+    }
+    .footer-social:hover::after { transform: scaleX(1); transform-origin: left; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px; margin-top: 40px; border-top: 1px solid rgba(20,20,20,.18);
+      font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+      color: rgba(20,20,20,.55);
+    }
+    #toTop:hover { color: #141414; }
+
+    /* ============ MOBILE ============ */
+    @media (max-width: 768px) {
+      .cursor-dot, .cursor-circle { display: none; }
+      .nav { padding: 18px 20px; }
+      .nav-right { height: 60px; }
+      .nav-links { gap: 14px; padding-right: 72px; }
+      .nav-link { font-size: 10px; }
+      .menu-button { width: 60px; height: 60px; margin-top: -30px; }
+      .menu-icon { width: 21px; height: 15px; }
+      .menu-line:nth-child(1) { top: 4.5px; }
+      .menu-line:nth-child(2) { top: 10.5px; }
+      .menu-button.open .menu-line:nth-child(1) { top: 7.5px; }
+      .menu-button.open .menu-line:nth-child(2) { top: 7.5px; }
+      .hero { padding: 120px 20px 35px; }
+      .hero-top { flex-direction: column; gap: 20px; }
+      .hero-location { text-align: left; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 30px; }
+      .section { padding: 120px 20px; }
+      .section-heading { margin-bottom: 60px; }
+      .work-item { grid-template-columns: 45px 1fr; }
+      .work-type { display: none; }
+      .project-preview { display: none; }
+      .more-btn { padding: 16px 30px; }
+      .menu-inner { padding: 110px 20px 25px; }
+      .menu-link { font-size: clamp(50px, 15vw, 80px); }
+      .menu-meta { flex-direction: column; gap: 10px; }
+      .footer-inner { padding: 34px 20px 20px; }
+      .footer-heading { font-size: clamp(52px, 16vw, 90px); }
+      .footer-heading-wrap { flex-direction: column; align-items: flex-start; gap: 30px; }
+      .f-circle { width: 135px; height: 135px; }
+      .footer-middle { grid-template-columns: 1fr; gap: 26px; }
+      .footer-socials { justify-content: flex-start; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <!-- GANTI: nama lu -->
+    <div class="pre-name">Barra Adivian</div>
+    <div class="pre-count" id="preCount">0</div>
+  </div>
+
+  <div class="noise"></div>
+
+  <div class="cursor-dot"></div>
+  <div class="cursor-circle"><span>View</span></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <!-- GANTI nanti: href="#" → halaman asli -->
+    <a href="#" class="nav-logo magnetic-target" data-strength=".4">BARRA</a>
+
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="#" class="nav-link" data-text="Work"><span>Work</span></a>
+        <a href="#" class="nav-link" data-text="About"><span>About</span></a>
+        <a href="#" class="nav-link" data-text="Contact"><span>Contact</span></a>
+      </nav>
+
+      <button id="menuButton" class="menu-button magnetic-target" data-strength=".45" type="button" aria-label="Open menu">
+        <span class="menu-icon">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FULLSCREEN MENU -->
+  <div id="menuOverlay" class="menu-overlay">
+    <div class="menu-inner">
+      <nav class="menu-links">
+        <a href="#" class="menu-link"><span>Work</span></a>
+        <a href="#" class="menu-link"><span>About</span></a>
+        <a href="#" class="menu-link"><span>Contact</span></a>
+      </nav>
+      <div class="menu-meta">
+        <span>Portfolio — 2026</span>
+        <span>Jakarta, Indonesia</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-top">
+        <div class="hero-label">Creative Developer</div>
+        <div class="hero-location">
+          Based in Indonesia<br>
+          Available worldwide
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="hero-line">DIGITAL</span>
+        <span class="hero-line">EXPERIENCES</span>
+        <span class="hero-line stroke">WITH SOUL.</span>
+      </h1>
+
+      <div class="hero-bottom">
+        <p class="hero-description">
+          I create websites and digital experiences where design,
+          interaction and technology come together.
+        </p>
+        <div class="scroll-label">
+          Scroll
+          <span class="scroll-arrow">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
+      </div>
+    </div>
+
+    <!-- WORK: 3 project + more works -->
+    <section id="work" class="section">
+      <div class="section-heading">
+        <span class="section-number">01 / Some Projects</span>
+        <span class="section-title-small">2024 — 2026</span>
+      </div>
+
+      <div class="work-list">
+        <!-- GANTI: href + data-image -->
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">01</span>
+          <span class="work-name">Portfolio</span>
+          <span class="work-type">Personal</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">02</span>
+          <span class="work-name">Santri App</span>
+          <span class="work-type">Web App</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">03</span>
+          <span class="work-name">Ruang Pulih</span>
+          <span class="work-type">Experience</span>
+        </a>
+      </div>
+
+      <!-- GANTI nanti: href="#" → halaman works -->
+      <div class="more-wrap">
+        <a href="#" class="more-btn magnetic" data-strength=".3">
+          <span class="more-label">More works ↗</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- spacer pembuka footer curve -->
+  <div class="footer-space"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner" id="footerInner">
+
+      <div class="footer-heading-wrap">
+        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
+
+        <!-- GANTI: email lu -->
+        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">Get in touch ↗</a>
+      </div>
+
+      <div class="footer-middle">
+        <p class="footer-copy">
+          Thanks for making it this far. If you want to build something
+          interesting, feel free to reach out.
+        </p>
+        <div class="footer-socials">
+          <!-- GANTI: link sosial lu -->
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
+          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Barra Adivian</span>
+        <span>Built with curiosity</span>
+        <span id="toTop">Back to top ↑</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- PROJECT PREVIEW -->
+  <div id="projectPreview" class="project-preview">
+    <img id="previewImage" src="" alt="Project preview" />
+  </div>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ===== LENIS ===== */
+    const lenis = new Lenis({ duration: 1.25, smoothWheel: true, wheelMultiplier: .9 });
+    lenis.on('scroll', ScrollTrigger.update);
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    lenis.stop(); // jalan lagi setelah preloader
+
+    /* ===== CURSOR ===== */
+    const cursorDot = document.querySelector(".cursor-dot");
+    const cursorCircle = document.querySelector(".cursor-circle");
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let circleX = mouseX, circleY = mouseY;
+
+    window.addEventListener("mousemove", (event) => {
+      mouseX = event.clientX; mouseY = event.clientY;
+      gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: .08, ease: "power2.out" });
+    });
+
+    gsap.ticker.add(() => {
+      circleX += (mouseX - circleX) * .12;
+      circleY += (mouseY - circleY) * .12;
+      cursorCircle.style.transform =
+        `translate(${circleX}px, ${circleY}px) translate(-50%, -50%)`;
+    });
+
+    document.querySelectorAll("a, button").forEach((element) => {
+      element.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
+      element.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
+    });
+
+    /* work-item → cursor jadi bulatan "View" */
+    document.querySelectorAll(".work-item").forEach((item) => {
+      item.addEventListener("mouseenter", () => {
+        document.body.classList.remove("cursor-hover");
+        document.body.classList.add("cursor-view");
+      });
+      item.addEventListener("mouseleave", () => document.body.classList.remove("cursor-view"));
+    });
+
+    /* ===== HERO INTRO (play setelah preloader) ===== */
+    const intro = gsap.timeline({
+      paused: true,
+      defaults: { ease: "power4.out" }
+    });
+    intro
+      .to(".hero-line", { y: 0, duration: 1.25, stagger: .12 })
+      .from(".hero-label, .hero-location", { opacity: 0, y: 25, duration: .7 }, "-=.7")
+      .from(".hero-bottom", { opacity: 0, y: 30, duration: .8 }, "-=.45");
+
+    /* ===== PRELOADER ===== */
+    const counter = { v: 0 };
+    const preTl = gsap.timeline({
+      onComplete: () => {
+        document.getElementById('preloader').remove();
+        lenis.start();
+        intro.play();
+      }
+    });
+    preTl
+      .to(counter, {
+        v: 100, duration: 1.6, ease: "power2.inOut",
+        onUpdate: () => document.getElementById('preCount').textContent = Math.round(counter.v)
+      })
+      .to(".pre-name, .pre-count", { y: -40, opacity: 0, duration: .45, ease: "power2.in" }, "+=.15")
+      .to("#preloader", { clipPath: "inset(0 0 100% 0)", duration: .9, ease: "power4.inOut" }, "-=.1");
+
+    /* ===== NAV COLLAPSE ===== */
+    const navLinks = document.querySelector(".nav-links");
+    const menuButton = document.getElementById("menuButton");
+
+    gsap.set(menuButton, { scale: 0, autoAlpha: 0 });
+    let navCollapsed = false;
+
+    lenis.on('scroll', ({ scroll }) => {
+      const shouldCollapse = scroll > 120;
+      if (shouldCollapse === navCollapsed || menuOpen) return;
+      navCollapsed = shouldCollapse;
+
+      gsap.to(navLinks, {
+        autoAlpha: navCollapsed ? 0 : 1,
+        y: navCollapsed ? -16 : 0,
+        duration: .45, ease: "power3.out"
+      });
+      /* munculnya lebih lembut — overshoot dikit, gak kasar */
+      gsap.to(menuButton, {
+        scale: navCollapsed ? 1 : 0,
+        autoAlpha: navCollapsed ? 1 : 0,
+        duration: .65,
+        ease: navCollapsed ? "back.out(1.2)" : "power3.in"
+      });
+    });
+
+    /* ===== MENU ===== */
+    const menuOverlay = document.getElementById("menuOverlay");
+
+    const menuTimeline = gsap.timeline({ paused: true, reversed: true });
+    menuTimeline
+      .to(menuOverlay, { clipPath: "inset(0% 0% 0% 0%)", duration: .85, ease: "power4.inOut" })
+      .to(".menu-link span", { y: 0, duration: .7, stagger: .08, ease: "power4.out" }, "-=.35");
+
+    let menuOpen = false;
+
+    function toggleMenu(force) {
+      menuOpen = force !== undefined ? force : !menuOpen;
+      if (menuOpen) {
+        menuButton.classList.add("open");
+        menuOverlay.style.pointerEvents = "auto";
+        gsap.to(".nav-logo, .nav-links", { autoAlpha: 0, duration: .3, ease: "power2.out" });
+        menuTimeline.play();
+        lenis.stop();
+      } else {
+        menuButton.classList.remove("open");
+        menuOverlay.style.pointerEvents = "none";
+        menuTimeline.reverse();
+        gsap.to(".nav-logo", { autoAlpha: 1, duration: .4, delay: .25 });
+        if (!navCollapsed) gsap.to(".nav-links", { autoAlpha: 1, duration: .4, delay: .25 });
+        lenis.start();
+      }
+    }
+
+    menuButton.addEventListener("click", () => toggleMenu());
+
+    /* ===== ANCHORS: href="#" diabaikan (multipage nanti) ===== */
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const target = link.getAttribute("href");
+
+        if (link.classList.contains("menu-link")) {
+          toggleMenu(false);
+          return;
+        }
+        if (target.length < 2) return;
+        lenis.scrollTo(target, { offset: -70, duration: 1.5 });
+      });
+    });
+
+    /* ===== MAGNETIC ===== */
+    document.querySelectorAll(".magnetic, .magnetic-target").forEach((element) => {
+      const strength = parseFloat(element.dataset.strength || ".25");
+
+      element.addEventListener("mousemove", (event) => {
+        const rect = element.getBoundingClientRect();
+        const x = event.clientX - rect.left - rect.width / 2;
+        const y = event.clientY - rect.top - rect.height / 2;
+        gsap.to(element, { x: x * strength, y: y * strength, duration: .5, ease: "power3.out" });
+      });
+
+      element.addEventListener("mouseleave", () => {
+        gsap.to(element, { x: 0, y: 0, duration: .8, ease: "elastic.out(1,.35)" });
+      });
+    });
+
+    /* ===== PROJECT PREVIEW ===== */
+    const preview = document.getElementById("projectPreview");
+    const previewImage = document.getElementById("previewImage");
+
+    document.querySelectorAll(".work-item").forEach((project) => {
+      project.addEventListener("mouseenter", () => {
+        previewImage.src = project.dataset.image;
+        gsap.to(preview, { opacity: 1, scale: 1, duration: .45, ease: "power3.out" });
+      });
+      project.addEventListener("mousemove", (event) => {
+        gsap.to(preview, { x: event.clientX + 25, y: event.clientY + 25, duration: .55, ease: "power3.out" });
+      });
+      project.addEventListener("mouseleave", () => {
+        gsap.to(preview, { opacity: 0, scale: .75, duration: .35, ease: "power2.in" });
+      });
+    });
+
+    /* ===== WORK REVEAL ===== */
+    gsap.utils.toArray(".work-item").forEach((item, index) => {
+      gsap.from(item, {
+        opacity: 0, y: 50, duration: .9, delay: index * .04,
+        scrollTrigger: { trigger: item, start: "top 90%" }
+      });
+    });
+
+    /* ===== SECTION HEADING REVEAL ===== */
+    gsap.utils.toArray(".section-heading").forEach((element) => {
+      gsap.from(element, {
+        opacity: 0, y: 35, duration: .9,
+        scrollTrigger: { trigger: element, start: "top 85%" }
+      });
+    });
+
+    /* ===== HERO PARALLAX ===== */
+    gsap.to(".hero-title", {
+      yPercent: -14, opacity: .35, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+    });
+
+    /* ===== FOOTER CURVE: parallax + heading springy-smooth (kyk Dennis) ===== */
+    gsap.fromTo("#footerInner", { yPercent: -14 }, {
+      yPercent: 0, ease: "none",
+      scrollTrigger: { trigger: ".footer-space", start: "top bottom", end: "bottom bottom", scrub: true }
+    });
+
+    /* spring halus: overshoot dikit, gak terlalu mantul */
+    gsap.from(".footer-heading", {
+      y: 130, duration: 1.5, ease: "back.out(1.2)",
+      scrollTrigger: { trigger: ".footer-space", start: "top 60%" }
+    });
+
+    gsap.from(".f-circle", {
+      scale: .6, opacity: 0, duration: 1.1, ease: "back.out(1.4)",
+      scrollTrigger: { trigger: ".footer-space", start: "top 55%" }
+    });
+
+    /* ===== BACK TO TOP ===== */
+    document.getElementById("toTop").addEventListener("click", () => {
+      lenis.scrollTo(0, { duration: 1.5 });
+    });
+
+    /* ===== RESIZE ===== */
+    window.addEventListener("resize", () => ScrollTrigger.refresh());
+  </script>
+
+</body>
+</html>
+<!--=============================
+    =============================
+
+    nice, bang cara biar button menunya agak besar dikit,
+    trus bagian footer barra adian dan jakarta, indonesia dihilangin trus bagian 
+    LET'S TALKnya geraknya agak di mantulin tapi
+    gak terlalu mantul dan smooth pokoknya kyk punya dennis,
+    trus button menu juga mantulnya jangan terlalu kasar dan magnetnya agak di gedein dikiit aja,
+    kyk punyanya yang mote works, wah itu udah perfect sih trus button menunya humberger agak kewabah dikit, jgn terlalu mepet atas,
+    dan klo bisa hovernya jgn trlalu kasar agar smooth aja, berarti dilamain dikit, dan cara hapus bagian have an idea di hapus, 
+    dan di lets connect sampingnya lets talk tapi di ganti jadi Get in touch,
+    trus ada hovernya yang bgnya jadi agak gelap tapi dikit aja sama kyk punya dennis dah gas bang,
+    trus pas refresh langsung otomatis ke hero
+    =============================
+    =============================-->
