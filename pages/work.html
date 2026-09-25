@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barra Adivian — Creative Developer</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="../css/work.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+</head>
+
+<body>
+  <div class="noise"></div>
+
+  <div class="cursor-dot"></div>
+  <div class="cursor-circle"><span>View</span></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <!-- GANTI nanti: href="#" → halaman asli -->
+    <a class="nav-logo magnetic-target" data-strength=".4">BARRA</a>
+
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="../home.html" class="nav-link" data-text="Home"><span>Home</span></a>
+        <a href="#" class="nav-link" data-text="Work"><span>Work</span></a>
+        <a href="#" class="nav-link" data-text="About"><span>About</span></a>
+        <a href="#" class="nav-link" data-text="Contact"><span>Contact</span></a>
+      </nav>
+
+      <button id="menuButton" class="menu-button magnetic-target" data-strength=".45" type="button" aria-label="Open menu">
+        <span class="menu-icon">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FULLSCREEN MENU -->
+  <div id="menuOverlay" class="menu-overlay">
+    <div class="menu-inner">
+      <nav class="menu-links">
+        <a href="../home.html" class="menu-link"><span>Home</span></a>
+        <a href="#" class="menu-link"><span>Work</span></a>
+        <a href="#" class="menu-link"><span>About</span></a>
+        <a href="#" class="menu-link"><span>Contact</span></a>
+      </nav>
+      <div class="menu-meta">
+        <span>Portfolio — 2026</span>
+        <span>Jakarta, Indonesia</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-top">
+        <div class="hero-label">Work</div>
+        <div class="hero-location">
+          Based in Indonesia<br>
+          Available worldwide
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        <span class="hero-line">THESE</span>
+        <span class="hero-line">ARE MY</span>
+        <span class="hero-line stroke">WORKS.</span>
+      </h1>
+
+      <div class="hero-bottom">
+        <p class="hero-description">
+          I create websites and digital experiences where design,
+          interaction and technology come together.
+        </p>
+        <div class="scroll-label">
+          Scroll
+          <span class="scroll-arrow">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
+        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
+      </div>
+    </div>
+
+<!-- STATEMENT -->
+<section class="statement">
+  <div class="statement-grid">
+
+    <p class="statement-big" id="statementBig">
+      I build digital experiences that make brands impossible to ignore.
+      No templates, no shortcuts — every detail is deliberate,
+      and everything moves with purpose.
+    </p>
+
+    <div class="statement-side">
+      <p class="statement-small">
+        Where design, code and interaction meet — that's where
+        I do my best work. A rare mix that shapes the way
+        I craft things for the web.
+      </p>
+      <!-- GANTI nanti: href="#" → halaman about -->
+      <a href="#" class="st-circle magnetic" data-strength=".3">
+        <span class="st-circle-label">About me ↗</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+    <!-- WORK: 3 project + more works -->
+    <section id="work" class="section">
+      <div class="section-heading">
+        <span class="section-number">// Some Projects</span>
+        <span class="section-title-small">2024 — 2026</span>
+      </div>
+
+      <div class="work-list">
+        <!-- GANTI: href + data-image -->
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">01</span>
+          <span class="work-name">Portfolio</span>
+          <span class="work-type">Personal</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">02</span>
+          <span class="work-name">Santri App</span>
+          <span class="work-type">Web App</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80">
+          <span class="work-number">03</span>
+          <span class="work-name">Ruang Pulih</span>
+          <span class="work-type">Experience</span>
+        </a>
+      </div>
+
+      <!-- GANTI nanti: href="#" → halaman works -->
+      <div class="more-wrap">
+        <a href="#" class="more-btn magnetic" data-strength=".3">
+          <span class="more-label">More works ↗</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- spacer pembuka footer curve -->
+  <div class="footer-space"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner" id="footerInner">
+
+      <div class="footer-heading-wrap">
+        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
+
+        <!-- GANTI: email lu -->
+        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
+          <span>Get in touch ↗</span>
+        </a>
+      </div>
+
+      <div class="footer-middle">
+        <p class="footer-copy">
+          Thanks for making it this far. If you want to build something
+          interesting, feel free to reach out.
+        </p>
+        <div class="footer-socials">
+          <!-- GANTI: link sosial lu -->
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
+          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Barra Adivian</span>
+        <span>Built with curiosity</span>
+        <span id="toTop">Back to top ↑</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- PROJECT PREVIEW -->
+  <div id="projectPreview" class="project-preview">
+    <img id="previewImage" src="" alt="Project preview" />
+  </div>
+
+
+  <!-- ENTRANCE CURTAIN -->
+<div class="pt" id="pt">
+  <div class="pt-label"><span id="ptText">Work</span></div>
+</div>
+  <script src="../js/work.js"></script>
+</body>
+</html>
