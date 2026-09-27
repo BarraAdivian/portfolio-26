@@ -3,22 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barra Adivian — Creative Developer</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Work — Barra Adivian</title>
 
   <link rel="stylesheet" href="../css/work.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
+<style>
+  /* curtain melengkung — versi putih */
+  .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
+  .pt.is-active{pointer-events:auto}
+.pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
+.pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
+  .pt-label{overflow:hidden}
+  .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
+  .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
+</style>
 </head>
 
-<body>
+<body data-page="work">
+
   <div class="noise"></div>
 
   <div class="cursor-dot"></div>
@@ -26,8 +36,7 @@
 
   <!-- NAV -->
   <header class="nav">
-    <!-- GANTI nanti: href="#" → halaman asli -->
-    <a class="nav-logo magnetic-target" data-strength=".4">BARRA</a>
+    <div class="nav-logo">BARRA</div>
 
     <div class="nav-right">
       <nav class="nav-links">
@@ -106,32 +115,31 @@
       </div>
     </div>
 
-<!-- STATEMENT -->
-<section class="statement">
-  <div class="statement-grid">
+    <!-- STATEMENT -->
+    <section class="statement">
+      <div class="statement-grid">
 
-    <p class="statement-big" id="statementBig">
-      I build digital experiences that make brands impossible to ignore.
-      No templates, no shortcuts — every detail is deliberate,
-      and everything moves with purpose.
-    </p>
+        <p class="statement-big" id="statementBig">
+          I build digital experiences that make brands impossible to ignore.
+          No templates, no shortcuts — every detail is deliberate,
+          and everything moves with purpose.
+        </p>
 
-    <div class="statement-side">
-      <p class="statement-small">
-        Where design, code and interaction meet — that's where
-        I do my best work. A rare mix that shapes the way
-        I craft things for the web.
-      </p>
-      <!-- GANTI nanti: href="#" → halaman about -->
-      <a href="#" class="st-circle magnetic" data-strength=".3">
-        <span class="st-circle-label">About me ↗</span>
-      </a>
-    </div>
+        <div class="statement-side">
+          <p class="statement-small">
+            Where design, code and interaction meet — that's where
+            I do my best work. A rare mix that shapes the way
+            I craft things for the web.
+          </p>
+          <a href="#" class="st-circle magnetic" data-strength=".3">
+            <span class="st-circle-label">About me ↗</span>
+          </a>
+        </div>
 
-  </div>
-</section>
+      </div>
+    </section>
 
-    <!-- WORK: 3 project + more works -->
+    <!-- WORK -->
     <section id="work" class="section">
       <div class="section-heading">
         <span class="section-number">// Some Projects</span>
@@ -139,7 +147,6 @@
       </div>
 
       <div class="work-list">
-        <!-- GANTI: href + data-image -->
         <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80">
           <span class="work-number">01</span>
           <span class="work-name">Portfolio</span>
@@ -157,7 +164,6 @@
         </a>
       </div>
 
-      <!-- GANTI nanti: href="#" → halaman works -->
       <div class="more-wrap">
         <a href="#" class="more-btn magnetic" data-strength=".3">
           <span class="more-label">More works ↗</span>
@@ -170,52 +176,49 @@
   <!-- spacer pembuka footer curve -->
   <div class="footer-space"></div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner" id="footerInner">
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner" id="footerInner">
 
-      <div class="footer-heading-wrap">
-        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
-
-        <!-- GANTI: email lu -->
-        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
-          <span>Get in touch ↗</span>
-        </a>
-      </div>
-
-      <div class="footer-middle">
-        <p class="footer-copy">
-          Thanks for making it this far. If you want to build something
-          interesting, feel free to reach out.
-        </p>
-        <div class="footer-socials">
-          <!-- GANTI: link sosial lu -->
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
-          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>© 2026 Barra Adivian</span>
-        <span>Built with curiosity</span>
-        <span id="toTop">Back to top ↑</span>
-      </div>
-
+    <div class="footer-heading-wrap">
+      <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
+      <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
+        <span>Get in touch ↗</span>
+      </a>
     </div>
-  </footer>
+
+    <div class="footer-middle">
+      <p class="footer-copy">
+        Thanks for making it this far. If you want to build something
+        interesting, feel free to reach out.
+      </p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
+        <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
+        <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
+        <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Barra Adivian</span>
+      <span>Built with curiosity</span>
+      <span id="toTop">Back to top ↑</span>
+    </div>
+
+  </div>
+</footer>
 
   <!-- PROJECT PREVIEW -->
   <div id="projectPreview" class="project-preview">
     <img id="previewImage" src="" alt="Project preview" />
   </div>
 
-
   <!-- ENTRANCE CURTAIN -->
-<div class="pt" id="pt">
-  <div class="pt-label"><span id="ptText">Work</span></div>
-</div>
+  <div class="pt" id="pt">
+    <div class="pt-label"><span id="ptText">Work</span></div>
+  </div>
+
   <script src="../js/work.js"></script>
 </body>
 </html>

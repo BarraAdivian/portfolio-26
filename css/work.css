@@ -11,20 +11,7 @@
     ::selection { background: #c2a6cc; color: #111; }
     @media (pointer: fine) { * { cursor: none !important; } }
 
-/* ============ ENTRANCE CURTAIN (pengganti preloader) ============ */
-.pt {
-  position: fixed; inset: 0; z-index: 12000;
-  background: #0b0b0b; display: grid; place-items: center;
-  pointer-events: none;
-}
-.pt.is-active { pointer-events: auto; }
-.pt-label { overflow: hidden; }
-.pt-label span {
-  display: block; transform: translateY(110%);
-  font-size: clamp(44px, 6vw, 90px); font-weight: 600;
-  letter-spacing: -.06em; color: #f5f4f0;
-}
-
+    /* ============ PRELOADER ============ */
     /* sembunyin scrollbar, scroll-nya tetep jalan */
 html {
   scrollbar-width: none;          /* Firefox */

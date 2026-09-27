@@ -16,13 +16,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
+<style>
+  /* curtain melengkung — versi putih */
+  .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
+  .pt.is-active{pointer-events:auto}
+.pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
+.pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
+  .pt-label{overflow:hidden}
+  .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
+  .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
+</style>
 </head>
 
-<body>
+<body data-page="home">
 
-  <!-- PRELOADER -->
+  <!-- PRELOADER (cuma muncul pertama kali per sesi) -->
   <div class="preloader" id="preloader">
-    <!-- GANTI: nama lu -->
     <div class="pre-name">Barra Adivian</div>
     <div class="pre-count" id="preCount">0</div>
   </div>
@@ -34,8 +43,7 @@
 
   <!-- NAV -->
   <header class="nav">
-    <!-- GANTI nanti: href="#" → halaman asli -->
-    <a class="nav-logo magnetic-target" data-strength=".4">BARRA</a>
+    <div class="nav-logo">BARRA</div>
 
     <div class="nav-right">
       <nav class="nav-links">
@@ -114,32 +122,31 @@
       </div>
     </div>
 
-<!-- STATEMENT -->
-<section class="statement">
-  <div class="statement-grid">
+    <!-- STATEMENT -->
+    <section class="statement">
+      <div class="statement-grid">
 
-    <p class="statement-big" id="statementBig">
-      I build digital experiences that make brands impossible to ignore.
-      No templates, no shortcuts — every detail is deliberate,
-      and everything moves with purpose.
-    </p>
+        <p class="statement-big" id="statementBig">
+          I build digital experiences that make brands impossible to ignore.
+          No templates, no shortcuts — every detail is deliberate,
+          and everything moves with purpose.
+        </p>
 
-    <div class="statement-side">
-      <p class="statement-small">
-        Where design, code and interaction meet — that's where
-        I do my best work. A rare mix that shapes the way
-        I craft things for the web.
-      </p>
-      <!-- GANTI nanti: href="#" → halaman about -->
-      <a href="#" class="st-circle magnetic" data-strength=".3">
-        <span class="st-circle-label">About me ↗</span>
-      </a>
-    </div>
+        <div class="statement-side">
+          <p class="statement-small">
+            Where design, code and interaction meet — that's where
+            I do my best work. A rare mix that shapes the way
+            I craft things for the web.
+          </p>
+          <a href="#" class="st-circle magnetic" data-strength=".3">
+            <span class="st-circle-label">About me ↗</span>
+          </a>
+        </div>
 
-  </div>
-</section>
+      </div>
+    </section>
 
-    <!-- WORK: 3 project + more works -->
+    <!-- WORK -->
     <section id="work" class="section">
       <div class="section-heading">
         <span class="section-number">// Some Projects</span>
@@ -147,7 +154,6 @@
       </div>
 
       <div class="work-list">
-        <!-- GANTI: href + data-image -->
         <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80">
           <span class="work-number">01</span>
           <span class="work-name">Portfolio</span>
@@ -165,9 +171,8 @@
         </a>
       </div>
 
-      <!-- GANTI nanti: href="#" → halaman works -->
       <div class="more-wrap">
-        <a href="#" class="more-btn magnetic" data-strength=".3">
+        <a href="./pages/work.html" class="more-btn magnetic" data-strength=".3">
           <span class="more-label">More works ↗</span>
         </a>
       </div>
@@ -184,8 +189,6 @@
 
       <div class="footer-heading-wrap">
         <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
-
-        <!-- GANTI: email lu -->
         <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
           <span>Get in touch ↗</span>
         </a>
@@ -197,7 +200,6 @@
           interesting, feel free to reach out.
         </p>
         <div class="footer-socials">
-          <!-- GANTI: link sosial lu -->
           <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
           <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
           <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
@@ -219,11 +221,11 @@
     <img id="previewImage" src="" alt="Project preview" />
   </div>
 
+  <!-- ENTRANCE CURTAIN -->
+  <div class="pt" id="pt">
+    <div class="pt-label"><span id="ptText">Home</span></div>
+  </div>
+
   <script src="./js/home.js"></script>
 </body>
 </html>
-
-<!-- nah kyk gini (img 1) tapi layoutnya punya gw aja, trus abis ini yang gerak ke karan kyk kereta di hapus trus yang projek kyk gini yak(img 2) nah tapi panjang sama margin2nya pakek yang punya gw, trus banyakin jadi 6, trus bagian more worksnya di hapus, trus lu bisa ga pas pencet work mau di nav atau di more works itu pindah halamannya kyk punya dennis, kyk dari bawah ada hitam manuhin semua trus tengah2 muncul smooth tulisan "Work" abis itu ilang smooth hitam2nya lanjut tapi hilangnya ke atas trus halamannya udah pindah ke work, jadi kyk gini bg hitam ke atas menuhin work muncul trus hilang bg hitam hilangnya ke atas halaman udah di work tapi kyk home muncul teks nya smooth, dari bawah langsung keatas kyk teks "DIGITAL
-EXPERIENCES
-WITH SOUL.
-" -->

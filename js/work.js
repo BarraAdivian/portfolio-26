@@ -34,6 +34,7 @@ document.querySelectorAll("a, button").forEach((element) => {
   element.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
 });
 
+/* work-item → cursor jadi bulatan "View" */
 document.querySelectorAll(".work-item").forEach((item) => {
   item.addEventListener("mouseenter", () => {
     document.body.classList.remove("cursor-hover");
@@ -42,48 +43,35 @@ document.querySelectorAll(".work-item").forEach((item) => {
   item.addEventListener("mouseleave", () => document.body.classList.remove("cursor-view"));
 });
 
-/* ===== INTRO — judul naik dari bawah (kyk DIGITAL EXPERIENCES) ===== */
-const intro = gsap.timeline({
-  paused: true,
-  defaults: { ease: "power4.out" }
-});
+/* ===== INTRO — judul naik dari bawah ===== */
+const intro = gsap.timeline({ paused: true, defaults: { ease: "power4.out" } });
 intro
   .to(".hero-line", { y: 0, duration: 1.25, stagger: .12 })
   .from(".hero-label, .hero-location", { opacity: 0, y: 25, duration: .7 }, "-=.7")
   .from(".hero-bottom", { opacity: 0, y: 30, duration: .8 }, "-=.45");
 
-/* ===== ENTRANCE CURTAIN (pengganti preloader) ===== */
-const pt = document.getElementById('pt');
-const ptFlag = sessionStorage.getItem('pt');
+/* ===== CURTAIN — work gak pake preloader, selalu curtain ===== */
+const CURTAIN = document.getElementById('pt');
 
-function openCurtain(label) {
-  if (label) {
-    document.getElementById('ptText').textContent = label;
-    gsap.set('.pt-label span', { y: '0%' });
-  }
+function openCurtain() {
+  document.getElementById('preloader')?.remove();
 
   gsap.timeline({
     onComplete: () => {
-      pt.classList.remove('is-active');
-      gsap.set(pt, { yPercent: -101 });  /* posisi akhir: kebuka penuh */
+      CURTAIN.classList.remove('is-active');
+      gsap.set(CURTAIN, { yPercent: -135, autoAlpha: 0 });
       lenis.start();
     }
   })
-    .to({}, { duration: label ? .35 : .15 })                                    /* hold */
-    .to('.pt-label span', { y: '-115%', duration: .45, ease: "power3.in" })      /* teks cabut ke atas */
-    .to(pt, { yPercent: -101, duration: .9, ease: "power4.inOut" }, "-=.05")     /* hitam cabut ke atas */
-    .add(() => intro.play(), "-=.55");                                           /* judul naik barengan */
+    .to({}, { duration: .15 })
+    .to(CURTAIN, { yPercent: -135, duration: 1, ease: "power3.inOut" })
+    .add(() => intro.play(), "-=.55");
 }
 
-if (ptFlag) {
-  /* datang dari home via transition → curtain masih nutup + label "Work" */
-  sessionStorage.removeItem('pt');
-  pt.classList.add('is-active');
-  openCurtain(ptFlag);
-} else {
-  /* direct load / refresh → curtain polos langsung kebuka */
-  openCurtain(null);
-}
+/* label udah ditampilin di halaman sebelumnya → sini cukup buka polos */
+sessionStorage.removeItem('pt');
+if (!sessionStorage.getItem('seen')) sessionStorage.setItem('seen', '1');
+openCurtain();
 
 /* ===== NAV COLLAPSE ===== */
 const navLinks = document.querySelector(".nav-links");
@@ -97,10 +85,16 @@ lenis.on('scroll', ({ scroll }) => {
   if (shouldCollapse === navCollapsed || menuOpen) return;
   navCollapsed = shouldCollapse;
 
-  gsap.to(navLinks, { autoAlpha: navCollapsed ? 0 : 1, y: navCollapsed ? -16 : 0, duration: .45, ease: "power3.out" });
+  gsap.to(navLinks, {
+    autoAlpha: navCollapsed ? 0 : 1,
+    y: navCollapsed ? -16 : 0,
+    duration: .45, ease: "power3.out"
+  });
   gsap.to(menuButton, {
-    scale: navCollapsed ? 1 : 0, autoAlpha: navCollapsed ? 1 : 0,
-    duration: .65, ease: navCollapsed ? "back.out(1.2)" : "power3.in"
+    scale: navCollapsed ? 1 : 0,
+    autoAlpha: navCollapsed ? 1 : 0,
+    duration: .65,
+    ease: navCollapsed ? "back.out(1.2)" : "power3.in"
   });
 });
 
@@ -134,18 +128,54 @@ function toggleMenu(force) {
 
 menuButton.addEventListener("click", () => toggleMenu());
 
-/* menu link → close dulu, baru navigasi */
-document.querySelectorAll(".menu-link").forEach((link) => {
-  link.addEventListener("click", (e) => {
-    const href = link.getAttribute("href");
-    if (href === "./work.html" || href.includes("work.html")) {
-      e.preventDefault();   /* udah di work, skip */
-      toggleMenu(false);
-      return;
-    }
+/* ===== NAVIGASI + CURTAIN MELENGKUNG ===== */
+function pageLabel(href) {
+  const f = href.toLowerCase();
+  if (f.includes('home'))    return 'Home';
+  if (f.includes('work'))    return 'Work';
+  if (f.includes('about'))   return 'About';
+  if (f.includes('contact')) return 'Contact';
+  return '';
+}
+
+document.querySelectorAll('a[href$=".html"]').forEach((link) => {
+  /* prefetch pas hover */
+  link.addEventListener('mouseenter', () => {
+    if (document.head.querySelector(`link[href="${link.getAttribute('href')}"]`)) return;
+    const l = document.createElement('link');
+    l.rel = 'prefetch';
+    l.href = link.getAttribute('href');
+    document.head.appendChild(l);
+  }, { once: true });
+
+  link.addEventListener('click', (e) => {
     e.preventDefault();
-    toggleMenu(false);
-    setTimeout(() => { window.location.href = href; }, 550);
+    const href = link.getAttribute('href');
+    const label = pageLabel(href);
+
+    /* klik link halaman yang lagi dibuka → skip */
+    if (label.toLowerCase() === document.body.dataset.page) return;
+
+    sessionStorage.setItem('pt', label);
+    document.getElementById('ptText').innerHTML = '<i class="pt-dot">•</i> ' + label;
+    CURTAIN.classList.add('is-active');
+    gsap.set(CURTAIN, { yPercent: 135, autoAlpha: 1 });
+
+    const nav = () => { window.location.href = href; };
+
+    if (link.classList.contains('menu-link') && menuOpen) {
+      toggleMenu(false);
+      gsap.timeline()
+        .to(CURTAIN, { yPercent: 0, duration: .9, ease: "power3.inOut" }, .35)
+        .to('.pt-label span', { y: '0%', duration: .5, ease: "power4.out" }, "-=.2")
+        .add(nav);
+    } else {
+      gsap.timeline()
+        .to(CURTAIN, { yPercent: 0, duration: .9, ease: "power3.inOut" })
+        .to('.pt-label span', { y: '0%', duration: .5, ease: "power4.out" }, "-=.25")
+        .to({}, { duration: .2 })
+        .add(nav);
+    }
   });
 });
 
@@ -166,9 +196,10 @@ document.querySelectorAll(".magnetic, .magnetic-target").forEach((element) => {
 });
 
 /* ===== INNER MAGNETIC ===== */
-document.querySelectorAll(".f-circle, .menu-button, .st-circle, .more-btn").forEach((btn) => {
-  const inner = btn.querySelector(".f-circle span, .menu-icon, .st-circle-label, .more-label");
+document.querySelectorAll(".st-circle, .f-circle, .menu-button, .more-btn").forEach((btn) => {
+  const inner = btn.querySelector(".st-circle-label, .f-circle span, .menu-icon, .more-label");
   if (!inner) return;
+
   const strength = parseFloat(btn.dataset.innerStrength || ".35");
 
   btn.addEventListener("mousemove", (e) => {
@@ -179,6 +210,7 @@ document.querySelectorAll(".f-circle, .menu-button, .st-circle, .more-btn").forE
       duration: .55, ease: "power3.out"
     });
   });
+
   btn.addEventListener("mouseleave", () => {
     gsap.to(inner, { x: 0, y: 0, duration: .9, ease: "elastic.out(1,.4)" });
   });
