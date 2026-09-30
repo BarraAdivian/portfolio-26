@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Barra Adivian</title>
+
+  <link rel="stylesheet" href="../css/about.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+  <style>
+    /* curtain melengkung — versi putih */
+    .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
+    .pt.is-active{pointer-events:auto}
+    .pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
+    .pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
+    .pt-label{overflow:hidden}
+    .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
+    .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
+  </style>
+</head>
+
+<body data-page="about">
+
+  <div class="noise"></div>
+
+  <div class="cursor-dot"></div>
+  <div class="cursor-circle"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-logo">BARRA</div>
+
+    <div class="nav-right">
+      <nav class="nav-links">
+        <a href="../home.html" class="nav-link" data-text="Home"><span>Home</span></a>
+        <a href="./work.html" class="nav-link" data-text="Work"><span>Work</span></a>
+        <a href="#" class="nav-link" data-text="About"><span>About</span></a>
+      </nav>
+
+      <button id="menuButton" class="menu-button magnetic-target" data-strength=".45" type="button" aria-label="Open menu">
+        <span class="menu-icon">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <!-- FULLSCREEN MENU -->
+  <div id="menuOverlay" class="menu-overlay">
+    <div class="menu-inner">
+      <nav class="menu-links">
+        <a href="../home.html" class="menu-link"><span>Home</span></a>
+        <a href="./work.html" class="menu-link"><span>Work</span></a>
+        <a href="#" class="menu-link"><span>About</span></a>
+      </nav>
+      <div class="menu-meta">
+        <span>Portfolio — 2026</span>
+        <span>Jakarta, Indonesia</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-top">
+        <div class="hero-label">About</div>
+        <div class="hero-location">
+          Based in Indonesia<br>
+          Available worldwide
+        </div>
+      </div>
+
+<h1 class="hero-title">
+  <span class="hero-line">THE STORY</span>
+  <span class="hero-line">BEHIND EVERY</span>
+  <span class="hero-line stroke">PIXEL.</span>
+</h1>
+
+      <div class="hero-bottom">
+        <p class="hero-description">
+          The story behind the screen — who I am,
+          what I do, and why I do it.
+        </p>
+        <div class="scroll-label">
+          Scroll
+          <span class="scroll-arrow">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTRO + PORTRAIT -->
+    <section class="intro">
+      <div class="intro-grid">
+        <!-- GANTI: foto lu -->
+        <div class="intro-media">
+          <img id="introImg" src="https://picsum.photos/seed/barra-portrait/800/1000" alt="Barra Adivian">
+        </div>
+
+        <div class="intro-copy">
+          <p class="intro-big" id="introBig">
+            Hello, i'm Barra Adivian — a creative developer who believes
+            the web should feel alive. I obsess over the
+            small stuff: timing curves, whitespace, and
+            the last 2% of every transition.
+          </p>
+
+          <p class="intro-small">
+            Currently based in Jakarta, I spend my days turning
+            ideas into interfaces that move with purpose. When I'm
+            not coding, I'm probably studying award-winning sites
+            or tweaking animations that nobody asked me to tweak.
+          </p>
+
+          <div class="intro-stats">
+            <div class="stat"><b><i data-count="3">0</i>+</b><span>Years experience</span></div>
+            <div class="stat"><b><i data-count="24">0</i></b><span>Projects shipped</span></div>
+            <div class="stat"><b><i data-count="6">0</i></b><span>Clients worldwide</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOURNEY -->
+    <section class="journey">
+      <div class="section-heading">
+        <span class="section-number">// Journey</span>
+        <span class="section-title-small">Milestones</span>
+      </div>
+
+      <div class="journey-list">
+        <div class="journey-item">
+          <span class="journey-year">2026</span>
+          <h3 class="journey-name">Freelance<br>Creative Developer</h3>
+          <p class="journey-desc">
+            Going full freelance — working with clients
+            across the globe on experiences that blend
+            design, motion and code.
+          </p>
+        </div>
+
+        <div class="journey-item">
+          <span class="journey-year">2025</span>
+          <h3 class="journey-name">First<br>Clients</h3>
+          <p class="journey-desc">
+            Landing my first real projects. Learning how to
+            listen, iterate, and deliver work that people
+            actually use — not just admire.
+          </p>
+        </div>
+
+        <div class="journey-item">
+          <span class="journey-year">2024</span>
+          <h3 class="journey-name">Deep Dive<br>into Motion</h3>
+          <p class="journey-desc">
+            Falling down the rabbit hole of GSAP, WebGL and
+            interaction design. This is where everything
+            clicked.
+          </p>
+        </div>
+
+        <div class="journey-item">
+          <span class="journey-year">2023</span>
+          <h3 class="journey-name">Hello,<br>Web</h3>
+          <p class="journey-desc">
+            The beginning. HTML, CSS and a terminal that
+            kept yelling at me. But the first "hello world"
+            that rendered exactly as intended — that was it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services">
+      <div class="section-heading">
+        <span class="section-number">// Expertise</span>
+        <span class="section-title-small">What I do</span>
+      </div>
+
+      <div class="svc-list">
+        <div class="svc">
+          <button class="svc-head" type="button">
+            <span class="svc-no">01</span>
+            <h3 class="svc-name">Frontend Development</h3>
+            <span class="svc-plus"></span>
+          </button>
+          <div class="svc-body">
+            <div><p>Responsive, accessible interfaces built with modern tools. Fast by default, tidy underneath — structure, typography and responsiveness treated as craft, not checklist.</p></div>
+          </div>
+        </div>
+
+        <div class="svc">
+          <button class="svc-head" type="button">
+            <span class="svc-no">02</span>
+            <h3 class="svc-name">Interaction & Motion</h3>
+            <span class="svc-plus"></span>
+          </button>
+          <div class="svc-body">
+            <div><p>Scroll choreography, page transitions, cursor play and micro-interactions — motion that guides the user instead of distracting them.</p></div>
+          </div>
+        </div>
+
+        <div class="svc">
+          <button class="svc-head" type="button">
+            <span class="svc-no">03</span>
+            <h3 class="svc-name">Creative Coding</h3>
+            <span class="svc-plus"></span>
+          </button>
+          <div class="svc-body">
+            <div><p>Generative visuals, WebGL experiments and unconventional layouts — for projects that need to be remembered, not just visited.</p></div>
+          </div>
+        </div>
+
+        <div class="svc">
+          <button class="svc-head" type="button">
+            <span class="svc-no">04</span>
+            <h3 class="svc-name">UI / UX Design</h3>
+            <span class="svc-plus"></span>
+          </button>
+          <div class="svc-body">
+            <div><p>From wireframe to polished system — clear hierarchy, honest layouts, and decisions backed by intent rather than trends.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- spacer pembuka footer curve -->
+  <div class="footer-space"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner" id="footerInner">
+
+      <div class="footer-heading-wrap">
+        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
+        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
+          <span>Get in touch ↗</span>
+        </a>
+      </div>
+
+      <div class="footer-middle">
+        <p class="footer-copy">
+          Thanks for making it this far. If you want to build something
+          interesting, feel free to reach out.
+        </p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
+          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Barra Adivian</span>
+        <span>Built with curiosity</span>
+        <span id="toTop">Back to top ↑</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ENTRANCE CURTAIN -->
+  <div class="pt" id="pt">
+    <div class="pt-label"><span id="ptText">About</span></div>
+  </div>
+
+  <script src="../js/about.js"></script>
+</body>
+</html>

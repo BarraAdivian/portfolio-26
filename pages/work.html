@@ -10,21 +10,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
-<style>
-  /* curtain melengkung — versi putih */
-  .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
-  .pt.is-active{pointer-events:auto}
-.pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
-.pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
-  .pt-label{overflow:hidden}
-  .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
-  .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
-</style>
+  <style>
+    /* curtain melengkung — versi putih */
+    .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
+    .pt.is-active{pointer-events:auto}
+    .pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
+    .pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
+    .pt-label{overflow:hidden}
+    .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
+    .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
+  </style>
 </head>
 
 <body data-page="work">
@@ -42,8 +41,7 @@
       <nav class="nav-links">
         <a href="../home.html" class="nav-link" data-text="Home"><span>Home</span></a>
         <a href="#" class="nav-link" data-text="Work"><span>Work</span></a>
-        <a href="#" class="nav-link" data-text="About"><span>About</span></a>
-        <a href="#" class="nav-link" data-text="Contact"><span>Contact</span></a>
+        <a href="/pages/about.html" class="nav-link" data-text="About"><span>About</span></a>
       </nav>
 
       <button id="menuButton" class="menu-button magnetic-target" data-strength=".45" type="button" aria-label="Open menu">
@@ -61,8 +59,7 @@
       <nav class="menu-links">
         <a href="../home.html" class="menu-link"><span>Home</span></a>
         <a href="#" class="menu-link"><span>Work</span></a>
-        <a href="#" class="menu-link"><span>About</span></a>
-        <a href="#" class="menu-link"><span>Contact</span></a>
+        <a href="/pages/about.html" class="menu-link"><span>About</span></a>
       </nav>
       <div class="menu-meta">
         <span>Portfolio — 2026</span>
@@ -84,15 +81,15 @@
       </div>
 
       <h1 class="hero-title">
-        <span class="hero-line">THESE</span>
-        <span class="hero-line">ARE MY</span>
-        <span class="hero-line stroke">WORKS.</span>
+        <span class="hero-line">CRAFTING</span>
+        <span class="hero-line">DIGITAL</span>
+        <span class="hero-line stroke">EXPERIENCES.</span>
       </h1>
 
       <div class="hero-bottom">
         <p class="hero-description">
-          I create websites and digital experiences where design,
-          interaction and technology come together.
+          A selection of projects I've designed and built —
+          each one crafted to work beautifully, not just look good.
         </p>
         <div class="scroll-label">
           Scroll
@@ -101,72 +98,44 @@
       </div>
     </section>
 
-    <!-- MARQUEE -->
-    <div class="marquee">
-      <div class="marquee-track">
-        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">DESIGN</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">DEVELOPMENT</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">INTERACTION</span><span class="marquee-dot">✦</span>
-        <span class="marquee-item">MOTION</span><span class="marquee-dot">✦</span>
-      </div>
-    </div>
-
-    <!-- STATEMENT -->
-    <section class="statement">
-      <div class="statement-grid">
-
-        <p class="statement-big" id="statementBig">
-          I build digital experiences that make brands impossible to ignore.
-          No templates, no shortcuts — every detail is deliberate,
-          and everything moves with purpose.
-        </p>
-
-        <div class="statement-side">
-          <p class="statement-small">
-            Where design, code and interaction meet — that's where
-            I do my best work. A rare mix that shapes the way
-            I craft things for the web.
-          </p>
-          <a href="#" class="st-circle magnetic" data-strength=".3">
-            <span class="st-circle-label">About me ↗</span>
-          </a>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- WORK -->
+    <!-- ============ WORK ============ -->
     <section id="work" class="section">
       <div class="section-heading">
-        <span class="section-number">// Some Projects</span>
+        <span class="section-number">// Selected Work</span>
         <span class="section-title-small">2024 — 2026</span>
       </div>
 
       <div class="work-list">
-        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200&q=80">
+        <!-- GANTI: href + data-image -->
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work1/900/675">
           <span class="work-number">01</span>
           <span class="work-name">Portfolio</span>
           <span class="work-type">Personal</span>
         </a>
-        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1200&q=80">
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work2/900/675">
           <span class="work-number">02</span>
           <span class="work-name">Santri App</span>
           <span class="work-type">Web App</span>
         </a>
-        <a href="#" class="work-item" data-image="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80">
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work3/900/675">
           <span class="work-number">03</span>
           <span class="work-name">Ruang Pulih</span>
           <span class="work-type">Experience</span>
         </a>
-      </div>
-
-      <div class="more-wrap">
-        <a href="#" class="more-btn magnetic" data-strength=".3">
-          <span class="more-label">More works ↗</span>
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work4/900/675">
+          <span class="work-number">04</span>
+          <span class="work-name">Quran Digital</span>
+          <span class="work-type">Application</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work5/900/675">
+          <span class="work-number">05</span>
+          <span class="work-name">Kopi Senja</span>
+          <span class="work-type">Landing Page</span>
+        </a>
+        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work6/900/675">
+          <span class="work-number">06</span>
+          <span class="work-name">Experimental</span>
+          <span class="work-type">Creative Code</span>
         </a>
       </div>
     </section>
@@ -176,40 +145,40 @@
   <!-- spacer pembuka footer curve -->
   <div class="footer-space"></div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner" id="footerInner">
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner" id="footerInner">
 
-    <div class="footer-heading-wrap">
-      <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
-      <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
-        <span>Get in touch ↗</span>
-      </a>
-    </div>
-
-    <div class="footer-middle">
-      <p class="footer-copy">
-        Thanks for making it this far. If you want to build something
-        interesting, feel free to reach out.
-      </p>
-      <div class="footer-socials">
-        <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
-        <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
-        <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
-        <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+      <div class="footer-heading-wrap">
+        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
+        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
+          <span>Get in touch ↗</span>
+        </a>
       </div>
+
+      <div class="footer-middle">
+        <p class="footer-copy">
+          Thanks for making it this far. If you want to build something
+          interesting, feel free to reach out.
+        </p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
+          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
+          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Barra Adivian</span>
+        <span>Built with curiosity</span>
+        <span id="toTop">Back to top ↑</span>
+      </div>
+
     </div>
+  </footer>
 
-    <div class="footer-bottom">
-      <span>© 2026 Barra Adivian</span>
-      <span>Built with curiosity</span>
-      <span id="toTop">Back to top ↑</span>
-    </div>
-
-  </div>
-</footer>
-
-  <!-- PROJECT PREVIEW -->
+  <!-- PROJECT PREVIEW (floating, ngikutin cursor) -->
   <div id="projectPreview" class="project-preview">
     <img id="previewImage" src="" alt="Project preview" />
   </div>

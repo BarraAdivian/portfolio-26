@@ -34,15 +34,6 @@ document.querySelectorAll("a, button").forEach((element) => {
   element.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
 });
 
-/* work-item → cursor jadi bulatan "View" */
-document.querySelectorAll(".work-item").forEach((item) => {
-  item.addEventListener("mouseenter", () => {
-    document.body.classList.remove("cursor-hover");
-    document.body.classList.add("cursor-view");
-  });
-  item.addEventListener("mouseleave", () => document.body.classList.remove("cursor-view"));
-});
-
 /* ===== INTRO — judul naik dari bawah ===== */
 const intro = gsap.timeline({ paused: true, defaults: { ease: "power4.out" } });
 intro
@@ -205,6 +196,20 @@ document.querySelectorAll(".magnetic, .magnetic-target").forEach((element) => {
   });
 });
 
+/* ===== SERVICES ACCORDION ===== */
+document.querySelectorAll(".svc-head").forEach((head) => {
+  head.addEventListener("click", () => {
+    const svc = head.parentElement;
+    const wasOpen = svc.classList.contains("open");
+
+    /* tutup semua dulu (satu terbuka pada satu waktu) */
+    document.querySelectorAll(".svc.open").forEach((s) => s.classList.remove("open"));
+
+    if (!wasOpen) svc.classList.add("open");
+    setTimeout(() => ScrollTrigger.refresh(), 600);
+  });
+});
+
 /* ===== INNER MAGNETIC ===== */
 document.querySelectorAll(".f-circle, .menu-button").forEach((btn) => {
   const inner = btn.querySelector(".f-circle span, .menu-icon");
@@ -226,46 +231,50 @@ document.querySelectorAll(".f-circle, .menu-button").forEach((btn) => {
   });
 });
 
-/* ===== PROJECT PREVIEW — center di ring + delay + skew ===== */
-const preview = document.getElementById("projectPreview");
-const previewImage = document.getElementById("previewImage");
-
-gsap.set(preview, { xPercent: -50, yPercent: -50, scale: .75 });
-
-let prevPX = 0;
-const skewTo = gsap.quickTo(preview, "skewX", { duration: .45, ease: "power3.out" });
-const rotTo  = gsap.quickTo(preview, "rotation", { duration: .45, ease: "power3.out" });
-
-gsap.ticker.add(() => {
-  const px = gsap.getProperty(preview, "x");
-  const py = gsap.getProperty(preview, "y");
-  const nx = px + (circleX - px) * .11;
-  const ny = py + (circleY - py) * .11;
-  const vx = nx - prevPX;
-  prevPX = nx;
-  gsap.set(preview, { x: nx, y: ny });
-  skewTo(gsap.utils.clamp(-12, 12, vx * .55));
-  rotTo(gsap.utils.clamp(-6, 6, vx * .18));
-});
-
-document.querySelectorAll(".work-item").forEach((project) => {
-  project.addEventListener("mouseenter", () => {
-    previewImage.src = project.dataset.image;
-    gsap.set(preview, { x: circleX, y: circleY });
-    prevPX = circleX;
-    gsap.to(preview, { opacity: 1, scale: 1, duration: .45, ease: "power3.out" });
-  });
-  project.addEventListener("mouseleave", () => {
-    gsap.to(preview, { opacity: 0, scale: .75, duration: .35, ease: "power2.in" });
-    skewTo(0); rotTo(0);
-  });
-});
-
-/* ===== SECTION HEADING REVEAL ===== */
+/* ===== REVEALS ===== */
 gsap.utils.toArray(".section-heading").forEach((element) => {
   gsap.from(element, {
     opacity: 0, y: 35, duration: .9,
     scrollTrigger: { trigger: element, start: "top 85%" }
+  });
+});
+
+/* intro: paragraf gede — kata nyala satu-satu (scrub) */
+const introBig = document.getElementById("introBig");
+introBig.innerHTML = introBig.textContent.trim().split(/\s+/)
+  .map(w => `<span class="w">${w.replace(/&/g, "&amp;")}</span>`)
+  .join(" ");
+
+gsap.to(".intro-big .w", {
+  color: "#f5f4f0", stagger: .06, ease: "none",
+  scrollTrigger: { trigger: ".intro-big", start: "top 80%", end: "bottom 45%", scrub: true }
+});
+
+gsap.from(".intro-small", {
+  opacity: 0, y: 30, duration: .9,
+  scrollTrigger: { trigger: ".intro-small", start: "top 88%" }
+});
+
+/* foto parallax halus */
+gsap.fromTo("#introImg", { yPercent: -8 }, {
+  yPercent: 8, ease: "none",
+  scrollTrigger: { trigger: ".intro-media", start: "top bottom", end: "bottom top", scrub: true }
+});
+
+/* counters */
+document.querySelectorAll("[data-count]").forEach((el) => {
+  const end = +el.dataset.count;
+  gsap.fromTo(el, { innerText: 0 }, {
+    innerText: end, duration: 1.6, ease: "power2.out", snap: { innerText: 1 },
+    scrollTrigger: { trigger: el, start: "top 88%" }
+  });
+});
+
+/* journey reveal */
+gsap.utils.toArray(".journey-item").forEach((item, index) => {
+  gsap.from(item, {
+    opacity: 0, y: 50, duration: .9, delay: index * .04,
+    scrollTrigger: { trigger: item, start: "top 90%" }
   });
 });
 
