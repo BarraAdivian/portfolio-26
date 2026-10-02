@@ -1,193 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Work — Barra Adivian</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Work — Barra Adivian</title>
 
-  <link rel="stylesheet" href="../css/work.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/work.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 
-  <style>
-    /* curtain melengkung — versi putih */
-    .pt{position:fixed;inset:0;z-index:12000;background:#f5f4f0;pointer-events:none;display:grid;place-items:center}
-    .pt.is-active{pointer-events:auto}
-    .pt::before{content:"";position:absolute;top:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:100% 100% 0 0/100% 100% 0 0}
-    .pt::after{content:"";position:absolute;bottom:-26vh;left:-5%;width:110%;height:26vh;background:#f5f4f0;border-radius:0 0 100% 100%/0 0 100% 100%}
-    .pt-label{overflow:hidden}
-    .pt-label span{display:block;transform:translateY(115%);font-size:clamp(44px,6vw,90px);font-weight:600;letter-spacing:-.06em;color:#141414;font-family:"DM Sans",sans-serif}
-    .pt-dot{color:#c2a6cc;font-style:normal;margin-right:10px}
-  </style>
-</head>
+    <style>
+      /* curtain melengkung — versi putih */
+      .pt {
+        position: fixed;
+        inset: 0;
+        z-index: 12000;
+        background: #f5f4f0;
+        pointer-events: none;
+        display: grid;
+        place-items: center;
+      }
+      .pt.is-active {
+        pointer-events: auto;
+      }
+      .pt::before {
+        content: "";
+        position: absolute;
+        top: -26vh;
+        left: -5%;
+        width: 110%;
+        height: 26vh;
+        background: #f5f4f0;
+        border-radius: 100% 100% 0 0/100% 100% 0 0;
+      }
+      .pt::after {
+        content: "";
+        position: absolute;
+        bottom: -26vh;
+        left: -5%;
+        width: 110%;
+        height: 26vh;
+        background: #f5f4f0;
+        border-radius: 0 0 100% 100%/0 0 100% 100%;
+      }
+      .pt-label {
+        overflow: hidden;
+      }
+      .pt-label span {
+        display: block;
+        transform: translateY(115%);
+        font-size: clamp(44px, 6vw, 90px);
+        font-weight: 600;
+        letter-spacing: -0.06em;
+        color: #141414;
+        font-family: "DM Sans", sans-serif;
+      }
+      .pt-dot {
+        color: #c2a6cc;
+        font-style: normal;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
 
-<body data-page="work">
+  <body data-page="work">
+    <div class="noise"></div>
 
-  <div class="noise"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"><span>View</span></div>
 
-  <div class="cursor-dot"></div>
-  <div class="cursor-circle"><span>View</span></div>
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-logo">BARRA</div>
 
-  <!-- NAV -->
-  <header class="nav">
-    <div class="nav-logo">BARRA</div>
+      <div class="nav-right">
+        <nav class="nav-links">
+          <a href="../home.html" class="nav-link" data-text="Home"
+            ><span>Home</span></a
+          >
+          <a href="#" class="nav-link" data-text="Work"><span>Work</span></a>
+          <a href="/pages/about.html" class="nav-link" data-text="About"
+            ><span>About</span></a
+          >
+        </nav>
 
-    <div class="nav-right">
-      <nav class="nav-links">
-        <a href="../home.html" class="nav-link" data-text="Home"><span>Home</span></a>
-        <a href="#" class="nav-link" data-text="Work"><span>Work</span></a>
-        <a href="/pages/about.html" class="nav-link" data-text="About"><span>About</span></a>
-      </nav>
-
-      <button id="menuButton" class="menu-button magnetic-target" data-strength=".45" type="button" aria-label="Open menu">
-        <span class="menu-icon">
-          <span class="menu-line"></span>
-          <span class="menu-line"></span>
-        </span>
-      </button>
-    </div>
-  </header>
-
-  <!-- FULLSCREEN MENU -->
-  <div id="menuOverlay" class="menu-overlay">
-    <div class="menu-inner">
-      <nav class="menu-links">
-        <a href="../home.html" class="menu-link"><span>Home</span></a>
-        <a href="#" class="menu-link"><span>Work</span></a>
-        <a href="/pages/about.html" class="menu-link"><span>About</span></a>
-      </nav>
-      <div class="menu-meta">
-        <span>Portfolio — 2026</span>
-        <span>Jakarta, Indonesia</span>
+        <button
+          id="menuButton"
+          class="menu-button magnetic-target"
+          data-strength=".45"
+          type="button"
+          aria-label="Open menu"
+        >
+          <span class="menu-icon">
+            <span class="menu-line"></span>
+            <span class="menu-line"></span>
+          </span>
+        </button>
       </div>
-    </div>
-  </div>
+    </header>
 
-  <main>
-
-    <!-- HERO -->
-    <section id="home" class="hero">
-      <div class="hero-top">
-        <div class="hero-label">Work</div>
-        <div class="hero-location">
-          Based in Indonesia<br>
-          Available worldwide
+    <!-- FULLSCREEN MENU -->
+    <div id="menuOverlay" class="menu-overlay">
+      <div class="menu-inner">
+        <nav class="menu-links">
+          <a href="../home.html" class="menu-link"><span>Home</span></a>
+          <a href="#" class="menu-link"><span>Work</span></a>
+          <a href="/pages/about.html" class="menu-link"><span>About</span></a>
+        </nav>
+        <div class="menu-meta">
+          <span>Portfolio — 2026</span>
+          <span>Jakarta, Indonesia</span>
         </div>
       </div>
-
-      <h1 class="hero-title">
-        <span class="hero-line">CRAFTING</span>
-        <span class="hero-line">DIGITAL</span>
-        <span class="hero-line stroke">EXPERIENCES.</span>
-      </h1>
-
-      <div class="hero-bottom">
-        <p class="hero-description">
-          A selection of projects I've designed and built —
-          each one crafted to work beautifully, not just look good.
-        </p>
-        <div class="scroll-label">
-          Scroll
-          <span class="scroll-arrow">↓</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ WORK ============ -->
-    <section id="work" class="section">
-      <div class="section-heading">
-        <span class="section-number">// Selected Work</span>
-        <span class="section-title-small">2024 — 2026</span>
-      </div>
-
-      <div class="work-list">
-        <!-- GANTI: href + data-image -->
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work1/900/675">
-          <span class="work-number">01</span>
-          <span class="work-name">Portfolio</span>
-          <span class="work-type">Personal</span>
-        </a>
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work2/900/675">
-          <span class="work-number">02</span>
-          <span class="work-name">Santri App</span>
-          <span class="work-type">Web App</span>
-        </a>
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work3/900/675">
-          <span class="work-number">03</span>
-          <span class="work-name">Ruang Pulih</span>
-          <span class="work-type">Experience</span>
-        </a>
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work4/900/675">
-          <span class="work-number">04</span>
-          <span class="work-name">Quran Digital</span>
-          <span class="work-type">Application</span>
-        </a>
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work5/900/675">
-          <span class="work-number">05</span>
-          <span class="work-name">Kopi Senja</span>
-          <span class="work-type">Landing Page</span>
-        </a>
-        <a href="#" class="work-item" data-image="https://picsum.photos/seed/work6/900/675">
-          <span class="work-number">06</span>
-          <span class="work-name">Experimental</span>
-          <span class="work-type">Creative Code</span>
-        </a>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- spacer pembuka footer curve -->
-  <div class="footer-space"></div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner" id="footerInner">
-
-      <div class="footer-heading-wrap">
-        <h2 class="footer-heading">LET'S<br>CONNECT.</h2>
-        <a href="mailto:hello@example.com" class="f-circle magnetic" data-strength=".35">
-          <span>Get in touch ↗</span>
-        </a>
-      </div>
-
-      <div class="footer-middle">
-        <p class="footer-copy">
-          Thanks for making it this far. If you want to build something
-          interesting, feel free to reach out.
-        </p>
-        <div class="footer-socials">
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">GitHub</a>
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">LinkedIn</a>
-          <a href="#" class="footer-social magnetic-target" data-strength=".4">Instagram</a>
-          <a href="mailto:hello@example.com" class="footer-social magnetic-target" data-strength=".4">Email</a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <span>© 2026 Barra Adivian</span>
-        <span>Built with curiosity</span>
-        <span id="toTop">Back to top ↑</span>
-      </div>
-
     </div>
-  </footer>
 
-  <!-- PROJECT PREVIEW (floating, ngikutin cursor) -->
-  <div id="projectPreview" class="project-preview">
-    <img id="previewImage" src="" alt="Project preview" />
-  </div>
+    <main>
+      <!-- HERO -->
+      <section id="home" class="hero">
+        <div class="hero-top">
+          <div class="hero-label">Work</div>
+          <div class="hero-location">
+            Based in Indonesia<br />
+            Available worldwide
+          </div>
+        </div>
 
-  <!-- ENTRANCE CURTAIN -->
-  <div class="pt" id="pt">
-    <div class="pt-label"><span id="ptText">Work</span></div>
-  </div>
+        <h1 class="hero-title">
+          <span class="hero-line">CRAFTING</span>
+          <span class="hero-line">DIGITAL</span>
+          <span class="hero-line stroke">EXPERIENCES.</span>
+        </h1>
 
-  <script src="../js/work.js"></script>
-</body>
+        <div class="hero-bottom">
+          <p class="hero-description">
+            A selection of projects I've designed and built — each one crafted
+            to work beautifully, not just look good.
+          </p>
+          <div class="scroll-label">
+            Scroll
+            <span class="scroll-arrow">↓</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ WORK ============ -->
+      <section id="work" class="section">
+        <div class="section-heading">
+          <span class="section-number">// Selected Work</span>
+          <span class="section-title-small">2024 — 2026</span>
+        </div>
+
+        <div class="work-list">
+          <!-- GANTI: href + data-image -->
+          <a
+            href="https://gizyedu.vercel.app"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/gizy.png"
+          >
+            <span class="work-number">01</span>
+            <span class="work-name">Gizy</span>
+            <span class="work-type">web education</span>
+          </a>
+          <a
+            href="https://kopitepi.vercel.app"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/kopitepi.png"
+          >
+            <span class="work-number">02</span>
+            <span class="work-name">Kopi Tepi</span>
+            <span class="work-type">Webshop</span>
+          </a>
+          <a
+            href="https://smartquran.netlify.app"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/quran.png"
+          >
+            <span class="work-number">03</span>
+            <span class="work-name">SmartQuran</span>
+            <span class="work-type">web app</span>
+          </a>
+          <a
+            href="https://yo-gort.vercel.app"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/yogurt.png"
+          >
+            <span class="work-number">04</span>
+            <span class="work-name">Yo!gort</span>
+            <span class="work-type">webshop</span>
+          </a>
+          <a
+            href="https://admin-and-user.netlify.app"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/admin.png"
+          >
+            <span class="work-number">05</span>
+            <span class="work-name">Sign in & Sign up</span>
+            <span class="work-type">web app</span>
+          </a>
+          <a
+            href="#"
+            class="work-item"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-image="../assets/comingsoon.svg"
+          >
+            <span class="work-number">06</span>
+            <span class="work-name">Coming Soon</span>
+            <span class="work-type">experimental</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- spacer pembuka footer curve -->
+    <div class="footer-space"></div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner" id="footerInner">
+        <div class="footer-heading-wrap">
+          <h2 class="footer-heading">LET'S<br />CONNECT.</h2>
+          <a
+            href="mailto:hello@example.com"
+            class="f-circle magnetic"
+            data-strength=".35"
+          >
+            <span>Get in touch ↗</span>
+          </a>
+        </div>
+
+        <div class="footer-middle">
+          <p class="footer-copy">
+            Thanks for making it this far. If you want to build something
+            interesting, feel free to reach out.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="footer-social magnetic-target" data-strength=".4"
+              >GitHub</a
+            >
+            <a href="#" class="footer-social magnetic-target" data-strength=".4"
+              >LinkedIn</a
+            >
+            <a href="#" class="footer-social magnetic-target" data-strength=".4"
+              >Instagram</a
+            >
+            <a
+              href="mailto:hello@example.com"
+              class="footer-social magnetic-target"
+              data-strength=".4"
+              >Email</a
+            >
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© 2026 Barra Adivian</span>
+          <span>Built with curiosity</span>
+          <span id="toTop">Back to top ↑</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- PROJECT PREVIEW (floating, ngikutin cursor) -->
+    <div id="projectPreview" class="project-preview">
+      <img id="previewImage" src="" alt="Project preview" />
+    </div>
+
+    <!-- ENTRANCE CURTAIN -->
+    <div class="pt" id="pt">
+      <div class="pt-label"><span id="ptText">Work</span></div>
+    </div>
+
+    <script src="../js/work.js"></script>
+  </body>
 </html>

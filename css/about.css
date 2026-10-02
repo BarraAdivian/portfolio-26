@@ -395,6 +395,23 @@ footer {
   color: rgba(245,244,240,.55);
 }
 
+/* tombol more works / album */
+.more-wrap { display: flex; justify-content: center; margin-top: 70px; }
+.more-btn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center;
+  padding: 20px 38px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px;
+  font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+}
+.more-btn::before {
+  content: ""; position: absolute; inset: 0; border-radius: 999px;
+  background: #c2a6cc; transform: translateY(101%);
+  transition: transform .5s cubic-bezier(.22,1,.36,1);
+}
+.more-btn:hover::before { transform: translateY(0); }
+.more-label { position: relative; z-index: 1; transition: color .3s ease; }
+.more-btn:hover .more-label { color: #111; }
+
 /* ============ MOBILE TAMBAHAN ============ */
 @media (max-width: 768px) {
   .intro { padding: 100px 20px; }

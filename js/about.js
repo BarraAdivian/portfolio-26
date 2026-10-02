@@ -211,8 +211,8 @@ document.querySelectorAll(".svc-head").forEach((head) => {
 });
 
 /* ===== INNER MAGNETIC ===== */
-document.querySelectorAll(".f-circle, .menu-button").forEach((btn) => {
-  const inner = btn.querySelector(".f-circle span, .menu-icon");
+document.querySelectorAll(".f-circle, .menu-button, .more-btn").forEach((btn) => {
+  const inner = btn.querySelector(".f-circle span, .menu-icon, .more-label");
   if (!inner) return;
 
   const strength = parseFloat(btn.dataset.innerStrength || ".35");
