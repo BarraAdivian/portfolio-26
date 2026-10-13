@@ -130,14 +130,27 @@ menuButton.addEventListener("click", () => toggleMenu());
 /* ===== NAVIGASI + CURTAIN MELENGKUNG ===== */
 function pageLabel(href) {
   const f = href.toLowerCase();
-  if (f.includes('home'))    return 'Home';
+  if (f.includes('home') || f === '/' || f === '') return 'Home';
   if (f.includes('work'))    return 'Work';
   if (f.includes('about'))   return 'About';
   if (f.includes('contact')) return 'Contact';
   return '';
 }
 
-document.querySelectorAll('a[href$=".html"]').forEach((link) => {
+/* deteksi link internal antar-halaman — .html DAN pretty URL (netlify) */
+function isPageLink(href) {
+  if (!href) return false;
+  if (href.charAt(0) === '#') return false;
+  if (href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+  if (/^https?:\/\//i.test(href) || href.startsWith('//')) return false;
+  /* aset statis bukan halaman */
+  if (/\.(svg|png|jpe?g|gif|webp|ico|css|js|pdf|txt|xml|json|woff2?)$/i.test(href)) return false;
+  return true;
+}
+
+document.querySelectorAll('a[href]').forEach((link) => {
+  if (!isPageLink(link.getAttribute('href'))) return;
+
   /* prefetch pas hover */
   link.addEventListener('mouseenter', () => {
     if (document.head.querySelector(`link[href="${link.getAttribute('href')}"]`)) return;

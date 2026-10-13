@@ -155,15 +155,28 @@ menuButton.addEventListener("click", () => toggleMenu());
 /* ===== NAVIGASI + CURTAIN MELENGKUNG ===== */
 function pageLabel(href) {
   const f = href.toLowerCase();
-  if (f.includes('home'))    return 'Home';
+  if (f.includes('home') || f === '/' || f === '') return 'Home';
   if (f.includes('work'))    return 'Work';
   if (f.includes('about'))   return 'About';
   if (f.includes('contact')) return 'Contact';
   return '';
 }
 
-document.querySelectorAll('a[href$=".html"]').forEach((link) => {
-  /* prefetch pas hover — halaman tujuan udah ke-download sebelum diklik */
+/* deteksi link internal antar-halaman — .html DAN pretty URL (netlify) */
+function isPageLink(href) {
+  if (!href) return false;
+  if (href.charAt(0) === '#') return false;
+  if (href.startsWith('mailto:') || href.startsWith('tel:')) return false;
+  if (/^https?:\/\//i.test(href) || href.startsWith('//')) return false;
+  /* aset statis bukan halaman */
+  if (/\.(svg|png|jpe?g|gif|webp|ico|css|js|pdf|txt|xml|json|woff2?)$/i.test(href)) return false;
+  return true;
+}
+
+document.querySelectorAll('a[href]').forEach((link) => {
+  if (!isPageLink(link.getAttribute('href'))) return;
+
+  /* prefetch pas hover */
   link.addEventListener('mouseenter', () => {
     if (document.head.querySelector(`link[href="${link.getAttribute('href')}"]`)) return;
     const l = document.createElement('link');
@@ -177,8 +190,11 @@ document.querySelectorAll('a[href$=".html"]').forEach((link) => {
     const href = link.getAttribute('href');
     const label = pageLabel(href);
 
-    /* klik link halaman yang lagi dibuka → skip */
-    if (label.toLowerCase() === document.body.dataset.page) return;
+    /* klik link halaman yang lagi dibuka → close menu (kalau dari menu), stay */
+    if (label.toLowerCase() === document.body.dataset.page) {
+      if (link.classList.contains('menu-link')) toggleMenu(false);
+      return;
+    }
 
     sessionStorage.setItem('pt', label);
     document.getElementById('ptText').innerHTML = '<i class="pt-dot">•</i> ' + label;
@@ -188,7 +204,6 @@ document.querySelectorAll('a[href$=".html"]').forEach((link) => {
     const nav = () => { window.location.href = href; };
 
     if (link.classList.contains('menu-link') && menuOpen) {
-      /* dari fullscreen menu: menu tutup dulu, curtain nyusul */
       toggleMenu(false);
       gsap.timeline()
         .to(CURTAIN, { yPercent: 0, duration: .9, ease: "power3.inOut" }, .35)
